@@ -76,7 +76,7 @@
 </div>
 <div id="__bundler_loading">Unpacking...</div>
 
-<form name="inscription-organisations" method="POST" data-netlify="true" data-netlify-honeypot="bot-field-organisations" hidden>
+<form name="inscription-organisations" method="POST" action="/thanks" data-netlify="true" data-netlify-honeypot="bot-field-organisations" hidden>
   <input type="hidden" name="origine" value="contacts-organisations">
   <input name="organisation" type="text">
   <input name="nom" type="text">
@@ -84,7 +84,7 @@
   <input name="email" type="email">
   <input name="bot-field-organisations" type="text">
 </form>
-<form name="inscription-citoyens" method="POST" data-netlify="true" data-netlify-honeypot="bot-field-citoyens" hidden>
+<form name="inscription-citoyens" method="POST" action="/thanks" data-netlify="true" data-netlify-honeypot="bot-field-citoyens" hidden>
   <input type="hidden" name="origine" value="contacts-citoyens">
   <input name="email" type="email">
   <input name="bot-field-citoyens" type="text">
@@ -139,6 +139,11 @@
 
       const manifest = JSON.parse(manifestEl.textContent)
       let template = JSON.parse(templateEl.textContent)
+        .replaceAll('action="/" data-netlify', 'action="/thanks" data-netlify')
+        .replaceAll(' data-netlify-form="true"', '')
+        .replace(/ data-success-message="[^"]*"/g, '')
+        .replace(/\s*<p data-form-status="true"[\s\S]*?<[/]p>/g, '')
+        .replace(/\n<script>\n[(][(][)] => [{]\n  const errorMessage = [\s\S]*?<[/]script>/, '')
 
       // Nested page bundles (iframe targets). Each ships ONCE, in the ROOT
       // document's manifest; frame srcs carry an about:blank#<uuid> marker
